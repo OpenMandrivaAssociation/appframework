@@ -10,6 +10,7 @@ Url:            https://appframework.dev.java.net/
 Group:		Development/Java
 #
 Source0:        https://appframework.dev.java.net/downloads/AppFramework-1.03-src.zip
+Patch0:         no-local-storage.diff
 BuildRequires:	jpackage-utils >= 1.6
 BuildRequires:	java >= 1.6
 BuildRequires:	java-devel >= 1.6
@@ -41,11 +42,13 @@ Javadoc for %{name}.
 # remove all binary libs
 find . -name "*.jar" -exec %{__rm} -f {} \;
 
+%patch0
+
 %{__ln_s} %{_javadir}/swingworker.jar lib/swing-worker.jar
 
 %build
 [ -z "$JAVA_HOME" ] && export JAVA_HOME=%{_jvmdir}/java 
-ant dist
+ant dist -verbose
 
 %install
 # jar
