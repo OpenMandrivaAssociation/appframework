@@ -11,11 +11,14 @@ Group:		Development/Java
 #
 Source0:        https://appframework.dev.java.net/downloads/AppFramework-1.03-src.zip
 BuildRequires:	jpackage-utils >= 1.6
+BuildRequires:	java >= 1.6
+BuildRequires:	java-devel >= 1.6
 BuildRequires:	swingworker >= 1.2.1
 BuildRequires:  ant
 BuildRequires:  ant-nodeps
 BuildRequires:  ant-junit
 Requires:	swingworker >= 1.2.1
+Requires:	java >= 1.6
 BuildArch:      noarch
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root
 
