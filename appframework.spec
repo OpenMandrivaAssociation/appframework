@@ -2,7 +2,7 @@
 
 Name:		appframework
 Version:	1.0.3
-Release:	%mkrel 1
+Release:	%mkrel 2
 Epoch:		0
 Summary:        Swing Application Framework API
 License:        LGPL
@@ -11,7 +11,7 @@ Group:		Development/Java
 #
 Source0:        https://appframework.dev.java.net/downloads/AppFramework-1.03-src.zip
 Patch0:         no-local-storage.diff
-BuildRequires:	jpackage-utils >= 1.6
+BuildRequires:	java-rpmbuild >= 1.6
 BuildRequires:	java >= 1.6
 BuildRequires:	java-devel >= 1.6
 BuildRequires:	swingworker >= 1.2.1
