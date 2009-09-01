@@ -2,7 +2,7 @@
 
 Name:		appframework
 Version:	1.0.3
-Release:	%mkrel 3
+Release:	%mkrel 4
 Epoch:		0
 Summary:        Swing Application Framework API
 License:        LGPL
