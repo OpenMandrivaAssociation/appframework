@@ -1,56 +1,54 @@
-%define section		free
+Name:    appframework
+Version: 1.03
+Release: 8
+Summary: Swing Application Framework
+License: LGPLv2+
+URL:     https://appframework.dev.java.net/
+Group:   Development/Java 
 
-Name:		appframework
-Version:	1.0.3
-Release:	%mkrel 5
-Epoch:		0
-Summary:        Swing Application Framework API
-License:        LGPL
-Url:            https://appframework.dev.java.net/
-Group:		Development/Java
-#
-Source0:        https://appframework.dev.java.net/downloads/AppFramework-1.03-src.zip
-Patch0:         no-local-storage.diff
-BuildRequires:	java-rpmbuild >= 1.6
-BuildRequires:	java >= 1.6
-BuildRequires:	java-devel >= 1.6
-BuildRequires:	swingworker >= 1.2.1
-BuildRequires:  ant
-BuildRequires:  ant-nodeps
-BuildRequires:  ant-junit
-Requires:	swingworker >= 1.2.1
-Requires:	java >= 1.6
-BuildArch:      noarch
-BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root
+Source0: https://appframework.dev.java.net/downloads/AppFramework-1.03-src.zip
+Patch0:  %{name}-%{version}-no-local-storage.diff
+Patch1:  %{name}-%{version}-openjdk.diff
+
+BuildRequires: ant
+BuildRequires: ant-nodeps
+BuildRequires: ant-junit
+BuildRequires: java-devel >= 0:1.6.0
+BuildRequires: jpackage-utils
+BuildRequires: swing-layout >= 1.0.3
+
+Requires: java >= 0:1.6.0
+Requires: jpackage-utils
+Requires: swing-layout >= 1.0.3
+
+BuildArch: noarch
 
 %description
 The JSR-296 Swing Application Framework prototype implementation is a small 
 set of Java classes that simplify building desktop applications.
 
 %package javadoc
-Summary:	Javadoc for %{name}
-Group:		Development/Java
-Requires(post):   /bin/rm,/bin/ln
-Requires(postun): /bin/rm
+Summary: Javadoc for %{name}
+Group:   Development/Java
 
 %description javadoc
 Javadoc for %{name}.
 
 %prep
-%{__rm} -fr %{buildroot}
-%setup -q -n AppFramework-1.03
+
+%setup -q -n AppFramework-%{version}
+
 # remove all binary libs
 find . -name "*.jar" -exec %{__rm} -f {} \;
 
-%patch0
-
-%{__ln_s} %{_javadir}/swingworker.jar lib/swing-worker.jar
+%patch0 -p0 -b .sav
+%patch1 -p1 -b .sav
 
 %build
-[ -z "$JAVA_HOME" ] && export JAVA_HOME=%{_jvmdir}/java 
-ant dist -verbose
+%{ant} -Dlibs.swing-layout.classpath=%{_javadir}/swing-layout.jar dist
 
 %install
+%{__rm} -fr %{buildroot}
 # jar
 %{__install} -d -m 755 %{buildroot}%{_javadir}
 %{__install} -m 644 dist/AppFramework-1.03.jar %{buildroot}%{_javadir}/%{name}-%{version}.jar
@@ -58,27 +56,17 @@ ant dist -verbose
 # javadoc
 %{__install} -d -m 755 %{buildroot}%{_javadocdir}/%{name}-%{version}
 %{__cp} -pr dist/javadoc/* %{buildroot}%{_javadocdir}/%{name}-%{version}
-(cd %{buildroot}%{_javadocdir} && ln -sf %{name}-%{version} %{name})
 
 %clean
 %{__rm} -rf %{buildroot}
 
-%post javadoc
-%{__rm} -f %{_javadocdir}/%{name}
-ln -s %{name}-%{version} %{_javadocdir}/%{name}
-
-%postun javadoc
-if [ $1 -eq 0 ]; then
-  %{__rm} -f %{_javadocdir}/%{name}
-fi
-
 %files
-%defattr(-,root,root)
+%defattr(-,root,root,-)
 %{_javadir}/*
-
+%doc COPYING README
 
 %files javadoc
-%defattr(-,root,root)
+%defattr(-,root,root,-)
 %dir %{_javadocdir}/%{name}-%{version}
 %{_javadocdir}/%{name}-%{version}/*
-%ghost %{_javadocdir}/%{name}
+
