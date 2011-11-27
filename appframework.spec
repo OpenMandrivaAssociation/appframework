@@ -1,6 +1,6 @@
 Name:    appframework
 Version: 1.03
-Release: 8
+Release: 10
 Summary: Swing Application Framework
 License: LGPLv2+
 URL:     https://appframework.dev.java.net/
