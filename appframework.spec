@@ -9,7 +9,7 @@ Release: 12.0%{?dist}
 Summary: Swing Application Framework
 License: LGPLv2+
 URL:     https://appframework.dev.java.net/
-Group:   Development/Libraries
+
 
 Source0: https://appframework.dev.java.net/downloads/AppFramework-1.03-src.zip
 Patch0:  %{name}-%{version}-no-local-storage.diff
@@ -35,7 +35,7 @@ set of Java classes that simplify building desktop applications.
 
 %package javadoc
 Summary: Javadoc for %{name}
-Group:   Documentation
+
 
 %description javadoc
 Javadoc for %{name}.
